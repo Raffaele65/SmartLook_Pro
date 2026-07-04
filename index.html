@@ -16,9 +16,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background:
-      linear-gradient(135deg, rgba(15,23,42,0.05) 0%, rgba(30,27,75,0.05) 100%),
-      url('background.jpg') center / cover no-repeat;
+    background: url('background.jpg') center / cover no-repeat;
     color: #e2e8f0;
     min-height: 100vh;
     display: flex;
@@ -27,11 +25,13 @@
     padding: 20px;
   }
   .card {
-    background: rgba(30, 41, 59, 0.95);
+    background: rgba(30, 41, 59, 0.10);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
     border-radius: 32px;
     padding: 32px 24px;
     box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.18);
     width: 100%;
     max-width: 420px;
   }
@@ -140,7 +140,7 @@
 const MQTT_HOST = "31f152bce9cb4a69b1ffde981eb89f7b.s1.eu.hivemq.cloud";
 const MQTT_WSS_PORT = 8884;
 const MQTT_FRONTEND_USER = "smartlock_frontend";
-const MQTT_FRONTEND_PASS = "5<pFQR%c(vP65Nt1";
+const MQTT_FRONTEND_PASS = "METTI_QUI_LA_PASSWORD_DI_smartlock_frontend";
 const DEVICE_ID = "sl01";
 
 const TOPIC_COMMAND      = `smartlock/${DEVICE_ID}/command`;
