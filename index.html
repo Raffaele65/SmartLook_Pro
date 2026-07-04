@@ -38,10 +38,8 @@
   h2 {
     font-size: 26px;
     font-weight: 700;
-    background: linear-gradient(135deg, #60a5fa, #a78bfa);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.8);
     text-align: center;
     margin-bottom: 20px;
   }
@@ -111,8 +109,8 @@
     <svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
       <defs>
         <linearGradient id="lockGradLogin" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#60a5fa"/>
-          <stop offset="1" stop-color="#a78bfa"/>
+          <stop offset="0" stop-color="#fbbf24"/>
+          <stop offset="1" stop-color="#f59e0b"/>
         </linearGradient>
       </defs>
       <rect x="4" y="11" width="16" height="10" rx="2.5" fill="url(#lockGradLogin)"/>
@@ -133,8 +131,8 @@
     <svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
       <defs>
         <linearGradient id="lockGradMain" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
-          <stop offset="0" stop-color="#60a5fa"/>
-          <stop offset="1" stop-color="#a78bfa"/>
+          <stop offset="0" stop-color="#fbbf24"/>
+          <stop offset="1" stop-color="#f59e0b"/>
         </linearGradient>
       </defs>
       <rect x="4" y="11" width="16" height="10" rx="2.5" fill="url(#lockGradMain)"/>
@@ -168,7 +166,7 @@
 const MQTT_HOST = "31f152bce9cb4a69b1ffde981eb89f7b.s1.eu.hivemq.cloud";
 const MQTT_WSS_PORT = 8884;
 const MQTT_FRONTEND_USER = "smartlock_frontend";
-const MQTT_FRONTEND_PASS = "5<pFQR%c(vP65Nt1";
+const MQTT_FRONTEND_PASS = "METTI_QUI_LA_PASSWORD_DI_smartlock_frontend";
 const DEVICE_ID = "sl01";
 
 const TOPIC_COMMAND      = `smartlock/${DEVICE_ID}/command`;
