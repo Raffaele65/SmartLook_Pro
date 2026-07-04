@@ -1,6 +1,6 @@
 {
-  "name": "Smart Lock",
-  "short_name": "Smart Lock",
+  "name": "SmartLook Pro 5.3",
+  "short_name": "SmartLook Pro",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
