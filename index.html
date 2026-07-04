@@ -16,7 +16,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: url('background.jpg') center / cover no-repeat;
+    background: url('background-mobile.jpg') center / cover no-repeat;
     color: #e2e8f0;
     min-height: 100vh;
     display: flex;
@@ -24,8 +24,13 @@
     align-items: center;
     padding: 20px;
   }
+  @media (min-width: 768px) {
+    body {
+      background: url('background-desktop.jpg') center / cover no-repeat;
+    }
+  }
   .card {
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.28);
     backdrop-filter: blur(22px);
     -webkit-backdrop-filter: blur(22px);
     border-radius: 32px;
