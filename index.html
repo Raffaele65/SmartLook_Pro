@@ -4,11 +4,21 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Smart Lock Remoto</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Smart Lock">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    background:
+      linear-gradient(135deg, rgba(15,23,42,0.86) 0%, rgba(30,27,75,0.86) 100%),
+      url('background.jpg') center / cover no-repeat fixed;
     color: #e2e8f0;
     min-height: 100vh;
     display: flex;
@@ -130,7 +140,7 @@
 const MQTT_HOST = "31f152bce9cb4a69b1ffde981eb89f7b.s1.eu.hivemq.cloud";
 const MQTT_WSS_PORT = 8884;
 const MQTT_FRONTEND_USER = "smartlock_frontend";
-const MQTT_FRONTEND_PASS = "5<pFQR%c(vP65Nt1";
+const MQTT_FRONTEND_PASS = "METTI_QUI_LA_PASSWORD_DI_smartlock_frontend";
 const DEVICE_ID = "sl01";
 
 const TOPIC_COMMAND      = `smartlock/${DEVICE_ID}/command`;
