@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SmartLook Pro 6.0</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="SmartLook Pro">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: url('background-mobile.jpg') center / cover no-repeat;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  @media (min-width: 768px) {
+    body {
+      background: url('background-desktop.jpg') center / cover no-repeat;
+    }
+  }
+  .card {
+    background: rgba(255, 255, 255, 0.28);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border-radius: 32px;
+    padding: 32px 24px;
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.3);
+    width: 100%;
+    max-width: 420px;
+  }
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6), 0 0 2px rgba(0,0,0,0.8);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  input {
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 60px;
+    border: 1px solid rgba(255,255,255,0.1);
+    margin: 8px 0;
+    background: rgba(15,23,42,0.8);
+    color: #f1f5f9;
+    font-size: 14px;
+  }
+  input:focus { outline: none; border-color: #60a5fa; }
+  button {
+    width: 100%;
+    background: rgba(96,165,250,0.15);
+    color: #e2e8f0;
+    border: 1px solid rgba(96,165,250,0.3);
+    padding: 12px 20px;
+    border-radius: 60px;
+    cursor: pointer;
+    margin-top: 12px;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  button:hover { background: rgba(96,165,250,0.25); }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-main {
+    background: linear-gradient(135deg, #1e293b, #0f172a);
+    border: 2px solid rgba(96,165,250,0.5);
+    color: #60a5fa;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    font-weight: bold;
+    font-size: 16px;
+    margin: 20px auto;
+    display: block;
+  }
+  .btn-danger { background: rgba(239,68,68,0.15); border-color: rgba(239,68,68,0.4); color: #f87171; }
+  .status-msg { text-align: center; margin-top: 16px; font-size: 14px; min-height: 20px; }
+  .ok { color: #4ade80; }
+  .err { color: #f87171; }
+  .device-status { text-align: center; font-size: 12px; color: #94a3b8; margin-bottom: 16px; }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; }
+  .dot-online { background: #4ade80; }
+  .dot-offline { background: #f87171; }
+  .log-container {
+    background: rgba(15,23,42,0.8);
+    padding: 12px;
+    border-radius: 16px;
+    max-height: 240px;
+    overflow-y: auto;
+    font-size: 12px;
+    margin: 12px 0;
+  }
+  .log-entry { padding: 6px 0; border-bottom: 1px solid rgba(255,255,255,0.06); }
+  .hidden { display: none !important; }
+  hr { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0; }
+</style>
+</head>
+<body>
+
+<div class="card" id="loginCard">
+  <h2 style="display:flex; align-items:center; justify-content:center; gap:10px;">
+    <svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <defs>
+        <linearGradient id="lockGradLogin" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fbbf24"/>
+          <stop offset="1" stop-color="#f59e0b"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="11" width="16" height="10" rx="2.5" fill="url(#lockGradLogin)"/>
+      <path d="M7.5 11V7.5a4.5 4.5 0 0 1 9 0V11" stroke="url(#lockGradLogin)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <circle cx="12" cy="15.5" r="1.6" fill="#0f172a"/>
+      <rect x="11.1" y="15.5" width="1.8" height="3" rx="0.8" fill="#0f172a"/>
+    </svg>
+    SmartLook Pro 6.0
+  </h2>
+  <input type="text" id="loginUser" placeholder="👤 Nome utente" autocomplete="username">
+  <input type="password" id="loginPass" placeholder="🔑 Password" autocomplete="current-password">
+  <button onclick="doLogin()">Accedi</button>
+  <div class="status-msg" id="loginMsg"></div>
+</div>
+
+<div class="card hidden" id="mainCard">
+  <h2 style="display:flex; align-items:center; justify-content:center; gap:10px;">
+    <svg width="30" height="30" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;">
+      <defs>
+        <linearGradient id="lockGradMain" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fbbf24"/>
+          <stop offset="1" stop-color="#f59e0b"/>
+        </linearGradient>
+      </defs>
+      <rect x="4" y="11" width="16" height="10" rx="2.5" fill="url(#lockGradMain)"/>
+      <path d="M7.5 11V7.5a4.5 4.5 0 0 1 9 0V11" stroke="url(#lockGradMain)" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <circle cx="12" cy="15.5" r="1.6" fill="#0f172a"/>
+      <rect x="11.1" y="15.5" width="1.8" height="3" rx="0.8" fill="#0f172a"/>
+    </svg>
+    SmartLook Pro 6.0
+  </h2>
+  <div class="device-status" id="deviceStatus"><span class="dot dot-offline"></span>In attesa di stato...</div>
+
+  <button id="lockBtn" class="btn-main" onclick="inviaOpen()">🔓 SBLOCCA</button>
+  <div class="status-msg" id="openMsg"></div>
+
+  <div id="adminSection" class="hidden">
+    <hr>
+    <b>📋 Registro Accessi</b>
+    <div class="log-container" id="logContainer"></div>
+    <button onclick="richiediLog()">🔄 Aggiorna registro</button>
+  </div>
+
+  <hr>
+  <button class="btn-danger" onclick="doLogout()">🚪 Esci</button>
+</div>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script>
+// ============================================================================
+// CONFIGURAZIONE — valori "semi-pubblici": vedi nota su credenziali frontend
+// ============================================================================
+const MQTT_HOST = "31f152bce9cb4a69b1ffde981eb89f7b.s1.eu.hivemq.cloud";
+const MQTT_WSS_PORT = 8884;
+const MQTT_FRONTEND_USER = "smartlock_frontend";
+const MQTT_FRONTEND_PASS = "5<pFQR%c(vP65Nt1";
+const DEVICE_ID = "sl01";
+
+const TOPIC_COMMAND      = `smartlock/${DEVICE_ID}/command`;
+const TOPIC_STATUS       = `smartlock/${DEVICE_ID}/status`;
+const TOPIC_RESPONSE     = `smartlock/${DEVICE_ID}/response`;
+const TOPIC_LOG_RESPONSE = `smartlock/${DEVICE_ID}/log_response`;
+
+let mqttClient = null;
+let chiaveK = null;       // ArrayBuffer di 32 byte, mai la password in chiaro
+let attesaRisposta = null; // { action, timeoutId }
+
+// --- Crittografia: deve combaciare ESATTAMENTE con auth.cpp del firmware ---
+
+async function derivaChiaveMQTT(password) {
+  const encoder = new TextEncoder();
+  const hashPassBuf = await crypto.subtle.digest('SHA-256', encoder.encode(password));
+  const passwordHashHex = Array.from(new Uint8Array(hashPassBuf))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+  const material = "smartlock-mqtt-key:" + passwordHashHex;
+  return await crypto.subtle.digest('SHA-256', encoder.encode(material));
+}
+
+async function firmaComando(kBuf, action, ts, nonce) {
+  const encoder = new TextEncoder();
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw', kBuf, { name: 'HMAC', hash: 'SHA-256' }, false, ['sign']
+  );
+  const messaggio = `${action}|${ts}|${nonce}`;
+  const firmaBuf = await crypto.subtle.sign('HMAC', cryptoKey, encoder.encode(messaggio));
+  return Array.from(new Uint8Array(firmaBuf))
+    .map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+function generaNonce() {
+  const bytes = crypto.getRandomValues(new Uint8Array(8));
+  return Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// --- Login / Logout ---
+
+async function doLogin() {
+  const user = document.getElementById('loginUser').value.trim();
+  const passField = document.getElementById('loginPass');
+  const pass = passField.value;
+
+  if (!user || !pass) {
+    document.getElementById('loginMsg').innerHTML = '<span class="err">Inserisci utente e password</span>';
+    return;
+  }
+
+  chiaveK = await derivaChiaveMQTT(pass);
+  passField.value = ''; // la password non serve piu', puliamo subito
+
+  connettiMQTT();
+}
+
+function doLogout() {
+  if (mqttClient) mqttClient.end(true);
+  chiaveK = null;
+  document.getElementById('mainCard').classList.add('hidden');
+  document.getElementById('loginCard').classList.remove('hidden');
+  document.getElementById('adminSection').classList.add('hidden');
+  document.getElementById('loginUser').value = '';
+}
+
+// --- Connessione MQTT ---
+
+function connettiMQTT() {
+  document.getElementById('loginMsg').textContent = 'Connessione in corso...';
+
+  mqttClient = mqtt.connect(`wss://${MQTT_HOST}:${MQTT_WSS_PORT}/mqtt`, {
+    username: MQTT_FRONTEND_USER,
+    password: MQTT_FRONTEND_PASS,
+    clientId: 'smartlock_web_' + Math.random().toString(16).slice(2)
+  });
+
+  mqttClient.on('connect', () => {
+    mqttClient.subscribe([TOPIC_STATUS, TOPIC_RESPONSE, TOPIC_LOG_RESPONSE]);
+    document.getElementById('loginCard').classList.add('hidden');
+    document.getElementById('mainCard').classList.remove('hidden');
+    richiediLog(); // probe silenzioso: rivela il pannello admin solo se autorizzato
+  });
+
+  mqttClient.on('error', (err) => {
+    document.getElementById('loginMsg').innerHTML = '<span class="err">Errore di connessione</span>';
+    console.error(err);
+  });
+
+  mqttClient.on('message', (topic, message) => {
+    gestisciMessaggio(topic, message.toString());
+  });
+}
+
+// --- Invio comandi ---
+
+async function inviaOpen() {
+  const btn = document.getElementById('lockBtn');
+  btn.disabled = true;
+  document.getElementById('openMsg').textContent = '';
+
+  const ts = Math.floor(Date.now() / 1000);
+  const nonce = generaNonce();
+  const mac = await firmaComando(chiaveK, "open", ts, nonce);
+
+  mqttClient.publish(TOPIC_COMMAND, JSON.stringify({ action: "open", ts, nonce, mac }));
+
+  impostaAttesaRisposta("open", () => {
+    btn.disabled = false;
+  });
+}
+
+async function richiediLog() {
+  const ts = Math.floor(Date.now() / 1000);
+  const nonce = generaNonce();
+  const mac = await firmaComando(chiaveK, "get_log", ts, nonce);
+  mqttClient.publish(TOPIC_COMMAND, JSON.stringify({ action: "get_log", ts, nonce, mac }));
+  impostaAttesaRisposta("get_log", () => {});
+}
+
+function impostaAttesaRisposta(action, onTimeoutOrDone) {
+  if (attesaRisposta) clearTimeout(attesaRisposta.timeoutId);
+  const timeoutId = setTimeout(() => {
+    if (action === "open") {
+      document.getElementById('openMsg').innerHTML = '<span class="err">Nessuna risposta: il dispositivo potrebbe essere offline</span>';
+    }
+    attesaRisposta = null;
+    onTimeoutOrDone();
+  }, 8000);
+  attesaRisposta = { action, onDone: onTimeoutOrDone, timeoutId };
+}
+
+// --- Gestione messaggi in arrivo ---
+
+function gestisciMessaggio(topic, payloadStr) {
+  // DEBUG TEMPORANEO: log di ogni messaggio ricevuto, per diagnosticare
+  // il problema del pallino di stato. Da rimuovere a diagnosi conclusa.
+  console.log('[DEBUG]', new Date().toISOString(), topic, '=>', JSON.stringify(payloadStr));
+  // Il topic di stato porta un payload testo semplice ("online"/"offline"),
+  // NON JSON: va gestito PRIMA del JSON.parse qui sotto, altrimenti
+  // JSON.parse("online") lancia un'eccezione e la funzione esce subito
+  // (return nel catch) senza mai aggiornare il pallino di stato — bug
+  // che teneva il pallino sempre rosso nonostante comandi/risposte
+  // (che sono JSON validi) funzionassero regolarmente.
+  if (topic === TOPIC_STATUS) {
+    const online = payloadStr === "online";
+    document.getElementById('deviceStatus').innerHTML =
+      `<span class="dot ${online ? 'dot-online' : 'dot-offline'}"></span>Dispositivo ${online ? 'online' : 'offline'}`;
+    return;
+  }
+
+  let payload;
+  try { payload = JSON.parse(payloadStr); } catch (e) { return; }
+
+  if (topic === TOPIC_RESPONSE && attesaRisposta && attesaRisposta.action === "open") {
+    clearTimeout(attesaRisposta.timeoutId);
+    const msgEl = document.getElementById('openMsg');
+    if (payload.result === "ok") {
+      msgEl.innerHTML = `<span class="ok">✅ Aperto${payload.user ? ' da ' + payload.user : ''}</span>`;
+    } else {
+      msgEl.innerHTML = `<span class="err">❌ ${traduciMotivo(payload.reason)}</span>`;
+    }
+    document.getElementById('lockBtn').disabled = false;
+    attesaRisposta.onDone();
+    attesaRisposta = null;
+  }
+
+  if (topic === TOPIC_LOG_RESPONSE) {
+    if (attesaRisposta && attesaRisposta.action === "get_log") {
+      clearTimeout(attesaRisposta.timeoutId);
+      attesaRisposta.onDone();
+      attesaRisposta = null;
+    }
+    if (payload.result === "ok") {
+      document.getElementById('adminSection').classList.remove('hidden');
+      const cont = document.getElementById('logContainer');
+      cont.innerHTML = (payload.entries || [])
+        .map(e => `<div class="log-entry">📝 ${e.ts} — ${e.user}</div>`)
+        .join('') || '<div class="log-entry">Nessun accesso registrato.</div>';
+    }
+    // se "error" (non autorizzato), non facciamo nulla: il pannello resta nascosto
+  }
+}
+
+function traduciMotivo(reason) {
+  const motivi = {
+    "non_autorizzato": "Non autorizzato",
+    "troppi_comandi": "Troppi comandi ravvicinati, riprova tra poco",
+    "azione_sconosciuta": "Azione sconosciuta"
+  };
+  return motivi[reason] || "Errore sconosciuto";
+}
+</script>
+</body></html>
